@@ -5,4 +5,5 @@ USER
 ADMIN
 /*username and password:admin
 
-if you have any suggestions and comment for this projects feel free to message me at wikiwidetony123@gmail.com 
+***if you find any errors or need to be change or to be added in this project just message at wikiwidetony123@gmail.com.***
+
