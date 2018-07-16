@@ -156,7 +156,7 @@ while($row = $result->fetch_array()){
   <div class="modal-content2">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Add Payment Transaction</h2>
+      <h2>Payment Transaction</h2>
     </div>
     <div class="modal-body">
       <div class="payment_input">

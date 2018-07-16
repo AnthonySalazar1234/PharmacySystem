@@ -117,7 +117,7 @@ while($row = $result->fetch_array()){
 <label>Quantity</label>
 </div>
 <div>
-<input type="number" name="quantity" value="<?php echo $row['quantity'] ?>" required>
+<input type="number" name="quantity" min="1" value="<?php echo $row['quantity'] ?>" required>
 </div>
 <div>
 <label>Price</label>

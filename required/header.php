@@ -13,7 +13,7 @@ if(empty($_SESSION['firstname']&&$_SESSION['username'])){
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
    <link rel="shortcut icon" href="../image/cart.jpg">
-	<link rel="stylesheet" type="text/css" href="../css/admin29.css">
+	<link rel="stylesheet" type="text/css" href="../css/admin30.css">
   <script src="../js/clock.js"></script>
   <script src="../js/print_reports.js"></script>
   <script src="../js/disablebackarrow.js"></script>
@@ -23,7 +23,7 @@ if(empty($_SESSION['firstname']&&$_SESSION['username'])){
 <label for="menuToggle" class="menu-icon"><img src="../image/menu1.png"></label>
 <div id="header">
 	<div class="dropdown">
- <button class="dropbtn">Welcome: <?php echo $username ?> &#9660;</button>
+ <button class="dropbtn">Welcome: <?php echo $username ?>&#9660;</button>
   <div class="dropdown-content">
   	<div class="profile_imgbox">
   		<img src="../upload/<?php echo $name ?>">

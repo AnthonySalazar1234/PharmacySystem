@@ -1,4 +1,5 @@
 <?php $title="SALES"; include"side_nav.php";require"../php/connect.php";?>
+
 <div id="table_header">
 <!--<button type="submit" id="myBtn">View By Date</button>
 <button>Total Profit: </button>-->
