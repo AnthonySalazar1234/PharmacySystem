@@ -1,32 +1,32 @@
-<?php $title="REPORTS RESULTS"; include"side_nav.php"; require"../php/connect.php"; 
+<?php $title="REPORTS RESULTS";
+ include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php"); 
+ require($_SERVER['DOCUMENT_ROOT'].'/php/connect.php'); 
+
 	$message='';
-	$history = (isset($_POST['history'])?$_POST['history']:"");
-	$start_date = (isset($_POST['start_date'])?$_POST['start_date']:"");
-	$end_date = (isset($_POST['end_date'])?$_POST['end_date']:"");
+	$history = $_POST['history'];
+	$start_date = $_POST['start_date'];
+	$end_date = $_POST['end_date'];
 	if(empty($start_date&&$end_date)){
 		header("Location:report.php");
 	}
 ?>
 <div id="table_header">
-<button type="submit" name="print" onclick='PrintDiv();'>Print Report</button>
+<button onclick="printContent('table_box');"><span class='fa fa-print' aria-hidden='true'></span> Print Report</button>
 </div>
-<div id="table_box" class="table_box" style="overflow-x: hidden;">
+<div id="table_box" class="table_box">
 <table>
 	<tr class="trheader">
-		<?php 
+<?php 
 $total=0;
 if($history == 'purchased_item'){
 	$purchased = "SELECT * FROM purchased_item WHERE date_purchased BETWEEN '$start_date' AND '$end_date' ORDER BY date_purchased";
 	$result1 = $connect->query($purchased);
 	$rowcount = $result1->num_rows;
-	while($row = $result1->fetch_array()){
-	$total = $row['qty']+$total;
-}
 echo
 	"<tr>
 		<th>From: $start_date</th>
 		<th>To: $end_date</th>
-		<th>Quantity Sold: $total</th>
+		<th>Sold Product: $rowcount</th>
 	</tr>";
 }
 else if($history == 'payments'){
@@ -39,18 +39,16 @@ echo
 	"<tr>
 		<th>From: $start_date</th>
 		<th>To: $end_date</th>
-		<th>Total Profit: $total</th>
+		<th>Profit: $total</th>
 	</tr>";
 }
-		?>
-	</tr>
-<?php 
 	if($history == 'purchased_item'){
 	$sql = "SELECT * FROM purchased_item WHERE date_purchased BETWEEN '$start_date' AND '$end_date' ORDER BY date_purchased";
 	$result = $connect->query($sql);
 	if($result->num_rows>0){
 	echo"
 			<tr class='resultslabel'>
+			<th>OR #</th>
 			<th>Brand Name</th>
 			<th>Generic Name</th>
 			<th>Expiration</th>
@@ -62,13 +60,14 @@ echo
 	while($row = $result->fetch_array()){
 	echo"
 		<tr  class='resultsrow' style='background-color:#fff;'>
-		<td>".$row['brand_name']."</td>
-		<td>".$row['generic_name']."</td>
-		<td>".$row['expiration']."</td>
-		<td>".$row['category']."</td>
-		<td>".$row['dosage']."</td>
-		<td>".$row['price']."</td>
-		<td>".$row['qty']."</td>
+		<td>$row[RS]</td>
+		<td>$row[brand_name]</td>
+		<td>$row[generic_name]</td>
+		<td>$row[expiration]</td>
+		<td>$row[category]</td>
+		<td>$row[dosage]</td>
+		<td>$row[price]</td>
+		<td>$row[qty]</td>
 		<tr>";
 	}
 }
@@ -113,3 +112,4 @@ $sql1 = "SELECT * FROM payment WHERE date_paid BETWEEN '$start_date' AND '$end_d
 ?>
 </table>
 </div>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>

@@ -1,5 +1,5 @@
 <?php
- require"../../php/connect.php";
+ require($_SERVER['DOCUMENT_ROOT'].'/php/connect.php');
  if(isset($_POST['add'])){ 
 $brand_name = $_POST['brand_name'];
 $generic_name = $_POST['generic_name'];
@@ -24,23 +24,25 @@ date_default_timezone_get('Asia/Manila');
 $date1=time();
 $date2 = date('Y-m-d',$date1);
 if($count !=0){
-	echo "<script>alert('Sorry You Have Enter Existing Medicine');window.location.href=('../../admin/admin_products.php');</script>";
+	echo "<script>alert('Sorry You Have Enter Existing Medicine');window.location.href=('/admin/admin_products.php');</script>";
 }
 else if($count1 !=0){
-	echo "<script>alert('Sorry You Have Enter Existing Medicine');window.location.href=('../../admin/admin_products.php');</script>";
+	echo "<script>alert('Sorry You Have Enter Existing Medicine');window.location.href=('/admin/admin_products.php');</script>";
 }
+//else if($expiration<=$manufactured){
 else if($expiration<=$date2){
-	echo"<script>alert('Unable to process you have enter expired medicine');window.location.href=('../../admin/admin_products.php');</script>";
+	echo"<script>alert('Unable to process you have enter expired medicine');window.location.href=('/admin/admin_products.php');</script>";
 }
 else{
 $insert = $connect->prepare("INSERT INTO inventory(product_id,brand_name,generic_name,category,type,dosage,manufactured,expiration,price,quantity,manufacturer,date)VALUES('$product_id','$brand_name','$generic_name','$category','$type','$dosage','$manufactured','$expiration','$price','$quantity','$manufacturer','$date')");
 $insert->execute();
 if($insert==TRUE){
-	echo "<script>alert('Successfull New Medicine Added');window.location.href=('../../admin/admin_products.php');</script>";
+	echo "<script>alert('Successfull New Medicine Added');window.location.href=('/admin/admin_products.php');</script>";
 }
 else{
 	echo"Error Add Medicine";
 }
 }
 }
+
 ?>

@@ -1,46 +1,40 @@
-<?php $title="SALES REPORTS"; include"side_nav.php"; require"../php/connect.php"; 
-	$message='';
+<?php $title="SALES REPORTS"; include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php"); 
+require($_SERVER['DOCUMENT_ROOT'].'/php/connect.php'); 
 	$start_date =  $_POST['start_date'];
 	$end_date = $_POST['end_date'];
-	$history = (isset($_POST['history'])?$_POST['history']:"");
+	$history = $_POST['history'];
+	if(empty($start_date&&$end_date)){
+		header("Location:admin_report.php");
+	}
 ?>
 <div id="table_header">
-<button type="submit" name="print" onclick='PrintDiv();'>Print</button>
+<button onclick="printContent('table_box');"><span class='fa fa-print' aria-hidden='true'></span> Print Report</button>
 <?php 
-$total=0;
-if($history == 'purchased_item'){
-	$purchased = "SELECT * FROM purchased_item WHERE date_purchased BETWEEN '$start_date' AND '$end_date' ORDER BY date_purchased";
-	$result = $connect->query($purchased);
-	$rowcount = $result->num_rows;
-	while($row = $result->fetch_array()){
-	$total = $row['qty']+$total;
+$total = 0;
+if($history == 'payments'){
+$cus_payment = "SELECT sum(total_payment) FROM payment WHERE date_paid BETWEEN '$start_date' AND '$end_date' ORDER BY date_paid";
+$result = $connect->query($cus_payment);
+while($row = $result->fetch_array()){
+$total = $row['sum(total_payment)'];
 }
-echo"<button>Total Quantity Sold: $total</button>";
-echo "<button>Total Product Sold: $rowcount</button>";
-}
-else if($history == 'payments'){
-$cus_payment = "SELECT * FROM payment WHERE date_paid BETWEEN '$start_date' AND '$end_date' ORDER BY date_paid";
-	$result1 = $connect->query($cus_payment);
-	while($row = $result1->fetch_array()){
-$total = $row['total_payment']+$total;
-}
-echo "<button>Total Profit: $total</button>";
 }
 ?>
 </div>
 <div id="table_box" class="table_box">
 <table>
-	<tr class="trheader">
-		<th>From: <?php echo $start_date ?></th>
-		<th>To: <?php echo $end_date ?></th>
-	</tr>
 <?php 
 	if($history == 'purchased_item'){
 	$purchased = "SELECT * FROM purchased_item WHERE date_purchased BETWEEN '$start_date' AND '$end_date' ORDER BY date_purchased";
 	$result = $connect->query($purchased);
+	$rowcount = $result->num_rows;
 	if($result->num_rows>0){
 	echo"
-			<tr class='resultslabel'>
+		<tr>
+		<th>From: $start_date</th>
+		<th>To:	$end_date</th>
+		<th>Sold Product: $rowcount</th>
+		</tr>
+		<tr class='resultslabel'>
 			<th>Brand Name</th>
 			<th>Generic Name</th>
 			<th>Expiration</th>
@@ -51,27 +45,32 @@ echo "<button>Total Profit: $total</button>";
 		</tr>";
 	while($row = $result->fetch_array()){
 	echo"
-		<tr  class='resultsrow' style='background-color:#fff;'>
-		<td>".$row['brand_name']."</td>
-		<td>".$row['generic_name']."</td>
-		<td>".$row['expiration']."</td>
-		<td>".$row['category']."</td>
-		<td>".$row['dosage']."</td>
-		<td>".$row['price']."</td>
-		<td>".$row['qty']."</td>
+		<tr>
+		<td>$row[brand_name]</td>
+		<td>$row[generic_name]</td>
+		<td>$row[expiration]</td>
+		<td>$row[category]</td>
+		<td>$row[dosage]</td>
+		<td>$row[price]</td>
+		<td>$row[qty]</td>
 		<tr>";
 	}
 }
 	else{
 		echo"<script>alert('No Results Found');window.location.href=('admin_report.php');</script>";
-		//$message = 'No Results';
 	}
 }
 else if($history == 'payments'){
 $cus_payment = "SELECT * FROM payment WHERE date_paid BETWEEN '$start_date' AND '$end_date' ORDER BY date_paid";
-	$result1 = $connect->query($cus_payment);
-	if($result1->num_rows>0){
-	echo"<tr class='resultslabel'>
+	$result = $connect->query($cus_payment);
+	if($result->num_rows>0){
+	echo"
+			<tr>
+			<th>From: $start_date</th>
+			<th>To:	$end_date</th>
+			<th>Profit: $total</th>
+			</tr>
+			<tr class='resultslabel'>
 			<th>RS Number</th>
 			<th>Total Quantity</th>
 			<th>Total Items</th>
@@ -81,25 +80,25 @@ $cus_payment = "SELECT * FROM payment WHERE date_paid BETWEEN '$start_date' AND 
 			<th>Paid</th>
 			<th>Total Change</th>
 		</tr>";
-	while($row = $result1->fetch_array()){
+	while($row = $result->fetch_array()){
 	echo"
-		<tr class='resultsrow' style='background-color:#fff;'>
-		<td>".$row['RS']."</td>
-		<td>".$row['total_qty']."</td>
-		<td>".$row['total_items']."</td>
-		<td>".$row['discount']."</td>
-		<td>".$row['vat']."</td>
-		<td>".$row['total_payment']."</td>
-		<td>".$row['paid']."</td>
-		<td>".$row['total_change']."</td>
+		<tr>
+		<td>$row[RS]</td>
+		<td>$row[total_qty]</td>
+		<td>$row[total_items]</td>
+		<td>$row[discount]</td>
+		<td>$row[vat]</td>
+		<td>$row[total_payment]</td>
+		<td>$row[paid]</td>
+		<td>$row[total_change]</td>
 		<tr>";
 	}
 }
 	else{
 		echo"<script>alert('No Results Found');window.location.href=('admin_report.php');</script>";
-		//$message = 'No Results';
 	}
 }
 ?>
 </table>
 </div>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>

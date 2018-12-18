@@ -1,0 +1,109 @@
+body{
+	background-image: url("../image/background.jpg");
+ 	background-size: 1000px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	cursor: pointer;
+}
+#login_box{
+	margin: auto;
+	height: 300px;
+	width: 600px;
+	background-color: #fff;
+	margin-top: 150px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0px 1px 6px 4px rgba(0, 0, 16, 0.10) inset,
+    0px 8px 16px 0px rgb(210, 210, 210);
+    -moz-box-shadow:0px 1px 6px 4px rgba(0, 0, 0, 0.10) inset,
+    0px 8px 16px 0px rgb(254, 254, 254),
+    box-shadow:0px 8px 16px 0px rgba(0, 0, 0, 0.2) inset;
+}
+.login_header{
+	padding: 15px;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	border-bottom: 3px solid #005064;
+	background-color: #007491;
+	 box-shadow:0px 8px 16px 0px rgba(0, 0, 0, 0.2) inset;
+}
+.login_header label{
+	font-size: 15.5pt;
+	font-family: Arial,sans-serif;
+	color: #fff;
+	font-weight: bold;	
+}
+.login_header span{
+	color: #fff;
+	float: right;
+	font-size: 17pt;
+}
+.user{
+	float: left;
+	margin-left: 15px;
+}
+.user img{
+	height: 180px;
+	padding: 30px;
+}
+.input{
+	float: left;
+	margin-left:10px;
+}
+.input span{
+	font-size: 15pt;
+}
+.input span:after{
+	color: orange;
+}
+.input input[type=text],[type=password]{
+	font-size: 13.5pt;
+	height: 30px;
+	width: 270px;
+	margin-top: 35px;
+	outline: none;
+	border:none;
+	border-bottom: 2px solid #000;
+	padding-left: 5px;
+	background-color: #fff;
+	font-family: Arial,sans-serif;
+}
+.input input[type=password]{
+	margin-top: 30px;
+}
+.input input[type=text]:focus,
+.input input[type=password]:focus{
+	border-bottom: 2px solid orange;
+} 	
+.login_btn{
+	margin-left: 17px;
+}
+.login_btn span{
+	color: #fff;
+}
+button{
+	font-size: 13.5pt;
+	padding: 8px;
+	margin: auto;
+	margin-top: 30px;
+	width: 275px;
+	outline: none;
+	background-color: #005064;
+	border:none;
+	color: #fff;
+	border-radius: 2px;
+}
+button:hover{
+	background-color: #015b72;
+}
+span{
+	color: #014d60;
+}
+p{
+	text-align: center;
+	margin-top: 10px;
+	font-weight: bold;
+	font-family: Arial,sans-serif;
+	font-size: 11pt;
+	color:  #005064;
+}

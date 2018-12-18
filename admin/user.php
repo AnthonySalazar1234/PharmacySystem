@@ -1,10 +1,10 @@
-<?php $title="DASHBOARD"; include"side_nav.php";?>
+<?php $title="USERS"; include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php"); ?>
 <div class="admin_header">
-<button type="submit" id="myBtn">Add Users +</button>
+<button type="submit" id="myBtn">Add Users <span class='fa fa-plus-circle' aria-hidden='true'></span></button>
  <div class="search">
-    <form method="POST">
+    <form method="POST" autocomplete="off">
       <input type="text" placeholder="Search Firstname..." name="firstname">
-      <button type="submit" name="search">Search</button>
+      <button type="submit" name="search"><span class='fa fa-search' aria-hidden='true'></span></button>
     </form>
 </div>
 </div>
@@ -21,16 +21,17 @@
     <th>Position</th>
     <th>Action</th>
   </tr>
-  <?php require'../php/connect.php';
+  <?php require($_SERVER['DOCUMENT_ROOT'].'/php/connect.php');  
    if(isset($_POST['search'])){
+  $user = $_GET['user'];
   $firstname = $_POST['firstname'];
   $message="";
-   $sql = "SELECT * FROM user WHERE firstname LIKE '%$firstname'";
+   $sql = "SELECT * FROM user WHERE firstname LIKE '%$firstname' AND user_type = 'user'";
   $result = $connect->query($sql);
   }
   else{
   $message="";
-  $sql = "SELECT * FROM user";
+  $sql = "SELECT * FROM user WHERE user_type = 'user'";
   $result = $connect->query($sql);
   }
     if($result->num_rows){
@@ -44,14 +45,15 @@
     <td> $row[address]</td>
     <td> $row[contact]</td>
     <td> $row[user_type]</td>
-     <td><a href='admin_edit_info.php?id=$row[id]'><img src='../image/edit.png' title='Edit Info'></a><a href='../php/delete_supplier.php?id=$row[id]&&user=$row[user_type]' onclick='return confirm('Are you sure you want to delete this admin')'><img src='../image/delete1.png' title='Delete Info'></td></a>
+     <td><a href='admin_edit_info.php?id=$row[id]'><img src='../image/edit.png' title='Edit Info'></a><a href='php/delete_user.php?id=$row[id]&&user=$row[user_type]'><img src='../image/delete1.png' title='Delete Info'></td></a>
+    <!--<td><a href='admin_edit_info.php?id=$row[id]'><img src='../image/edit.png' title='Edit Info'></a><a href='php/delete_user.php?id=$row[id]&&user=$row[user_type]' onclick='return confirm('Are you sure you want to delete this $user_type')'><img src='../image/delete1.png' title='Delete Info'></td></a>-->
   </tr>";
   }}
     else if(!empty($_POST['firstname'])){
       echo"<script>alert('No Results Found');window.location.href=('user.php');</script>";
     }
   else{
-    echo "<div class='message'>No Admin Created</div>";
+    echo "<div class='message'>No Acoount Created</div>";
   }
   ?>
   </table>
@@ -59,22 +61,22 @@
 </div>
 
 <!---Modal reg-->
-<form method="POST" enctype="multipart/form-data" action="php/user_reg.php">
-      <div id="myModal" class="modal">
+<form method="POST" enctype="multipart/form-data" action="php/user_reg.php" autocomplete="off">
+  <div id="myModal" class="modal">
   <div class="modal-content3">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Add New Users</h2>
+      <h2><span class='fa fa-users' aria-hidden='true'></span> Add New Users</h2>
     </div>
     <div class="modal-body">
        <div class="user_input">
         <div class="img_box_pic">
           <img src="../image/user.png" id="image-field">
           <div class="upload-btn-wrapper">
-        <button class="upload">Choose Image</button>
+        <button class="upload"><span class='fa fa-image' aria-hidden='true'></span> Choose Image</button>
         <input type='file' name="file" id="file-field" onchange="previewImage(event)"/ required="">
           </div>
-           <button type="submit" name="reg">Save Info</button>
+           <button type="submit" name="reg"><span class='fa fa-save' aria-hidden='true'></span> Save Info</button>
         </div>
         <div class="column1">
           <div>
@@ -88,21 +90,16 @@
             <label>Birthdate</label>
           </div>
           <div>
-          <select required="" name="month" class="bdate" style="width: 95px;">
-            <option selected="selected">Month</option>
-            <option>January</option>
-            <option>February</option>
-            <option>March</option>
-            <option>April</option>
-            <option>May</option>
-            <option>June</option>
-            <option>July</option>
-            <option>August</option>
-            <option>September</option>
-            <option>October</option>
-            <option>November</option>
-            <option>December</option>
-          </select>
+       <select required name="month" class="bdate" style="width: 95px;">
+        <?php
+       $month_names = array("January","February","March","April","May","June","July","August","September","October","November","December");
+          echo"<option selected='selected'>Month</option>";
+          foreach($month_names as $month)
+          {
+          echo "<option>".$month."</option>";
+           }
+          ?>
+        </select>
           <select required="" name="date" class="bdate">
             <option>Date</option>
             <?php 
@@ -160,3 +157,4 @@
 </form>
 <script src="../js/modal_form.js"></script>
 <script src="../js/prev_pic.js"></script>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>

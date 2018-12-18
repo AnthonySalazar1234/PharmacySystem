@@ -1,85 +1,94 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>R&S PHARMACY PRINT RECEIPT
-<?php    
-  session_start(); 
-if(empty($_SESSION['firstname'])){
-  header("Location: ../index.php");
-} 
-?>
-  </title>
-  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="stylesheet" type="text/css" href="../css/receipt.css">
-  <script src="../js/receipt.js"></script>
-</head>
-<body>
-<div id="header">
-<a href="sales.php"><button class="back">Back</button></a>
-<button class="onprint" onclick="printContent('receipt_box1')">Print Receipt</button>
+ <?php 
+ include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php"); 
+ require($_SERVER['DOCUMENT_ROOT']."/php/connect.php");?>
+ <div class='print'>
+<div>
+<a href='transactions.php'><button><span class='fa fa-arrow-left' aria-hidden='true'></span> Back</button></a>
 </div>
-<div id="receipt_box1">
-<div class="receipt_header">
-  <label>R&S PHARMACY</label>
-  <p>Calumpang Molo, Iloilo City, 5000</p>
-  <p>Official Receipt</p>
-  <p>Date: <?php 
-require"../php/connect.php";
+<div>
+<button onclick="printContent('receipt_box')"><span class='fa fa-print' aria-hidden='true'></span> Print Receipt</button>
+</div>
+</div>
+<?php
 $RS = $_GET['RS'];
-$sql1 = "SELECT * FROM payment WHERE RS = '$RS'";
-$result1 = mysqli_query($connect,$sql1);
-$res = mysqli_fetch_assoc($result1);
-echo $res['date_paid'];	
-  ?></p>
-</div>
-<div class="or">
-<p>
-OR #: RS-<?php 
-$RS = (isset($_GET['RS'])?$_GET['RS']:"");
-echo $RS;
-?></p>
-</div>
- <div class="underline">
- <h3>---------------------------------------------------------</h3>
-  </div>
-<div class="receipt_body">
-<table>
-  <tr>
+$sql = "SELECT * FROM payment WHERE RS = '$RS'";
+$result = $connect->query($sql);
+$res = $result->fetch_assoc();
+echo "
+      <div id='receipt_box'>
+      <div class ='receipt_header'>
+      <label>R&S PHARMACY</label>
+      <b><p>Calumpang Molo, Iloilo City, 5000</p>
+      <p>Official Receipt</p></b>
+      <p>Contact #: 022-1233-4131</p>
+      <p>Date: $res[date_paid]</p>
+      <p>Time: $res[time]</p>
+      </div>";
+    $message ='';
+    $sql1 = "SELECT * FROM purchased_item WHERE RS = '$RS'";
+    $result1 = $connect->query($sql1);
+    if($result1->num_rows){
+      echo "
+    <div class='or'>
+    <p>OR #: RS-$RS</p>
+    <p>Counter: 0001</p>
+    </div>
+    <h3>---------------------------------------------------------</h3>
+    <div class='receipt_body'>
+    <div class='receipt_table'>
+    <table>
+      <tr>
     <th>Medicine</th>
     <th>Quantity</th>
     <th>Price</th>
-  </tr>
-  <?php
-    $message ='';
-    $sql = mysqli_query($connect,"SELECT * FROM purchased_item WHERE RS = '$RS'");
-    if(mysqli_num_rows($sql)){
-    while($row = mysqli_fetch_array($sql)){
+      </tr>";
+    while($row = $result1->fetch_array()){
       echo"<tr class='td'>
-          <th>".$row['brand_name']."</th>
-          <th>".$row['qty']."</th>
-          <th>".$row['price']."</th>";
+          <th>$row[brand_name]</th>
+          <th>$row[qty]</th>
+          <th>$row[price]</th>";
 }}
 else{
   $message = "EMPTY DATA";
 }
   ?>
-</table>
-<div class="underline">
-  <h3>---------------------------------------------------------</h3>
-  </div>
-<div class="total_list">
 <?php 
-echo "<p>Purchased Item: ".$res['total_items']."</p>
-      <p>Discount: ".$res['discount']."%</p>
-      <p>Vat: ".$res['vat']."</p>
-      <p>Amount Due: ₱".$res['total_payment']."</p>
-      <p>Amount Paid: ₱".$res['paid']."</p>
-      <p>Change: ₱".$res['total_change']."</p>  
-      ";
+echo "
+  </table>
+  </div>
+    <h3>---------------------------------------------------------</h3>
+    <div class='total_list'>
+      <p>Purchased Item(s): $res[total_items]</p>
+      <p>Discount: $res[discount]%</p>
+      <p>Vatable Sales: $res[vat]</p>
+      <p>Vat(12%): $res[total_vat]</p>
+      <p>Amount Due: ₱ $res[total_payment]</p>
+      <p>Amount Paid: ₱ $res[paid]</p>
+      <p>Change: ₱ $res[total_change]</p>  
+    <h3>--------------------------------------------------</h3>
+      <center><p>Cashier: $_SESSION[firstname] $_SESSION[lastname]</p></center>
+    <h3>--------------------------------------------------</h3>
+     <strong><div>
+      <p>Sold to:</p>
+      </div>
+      <div>
+      <p>Address:</p>
+      </div>
+      <div>
+      <p>Tin:</p>
+      </div></strong>
+    <h3>--------------------------------------------------</h3>
+        <center>
+        <p>Only defective and/or damaged items will be accepted for return or exchange and
+        subject to DTI rules on return/exchange.Bring this receipt to return or exchange within seven(7) days from purchase date.</p></center>
+     <h3>--------------------------------------------------</h3>
+      <center>
+      <p>This Serve as your Sales Invoice</>
+      <p>Thank you and Come Again</p>
+      </center>
+</div>
+</div>
+</div>";
 ?>
-</div>
-</div>
-</div>
-
-
+ <script src="../js/receipt.js"></script>
+ <?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>

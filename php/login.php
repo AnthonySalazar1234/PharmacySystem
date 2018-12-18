@@ -1,11 +1,25 @@
 <?php
 require"connect.php";
 session_start();
-
+$usernameErr = $passwordErr = $username = $password =  $passwordinvalidErr = $usernameinvalidErr = ''; 
 if(isset($_POST['login'])){
-$username = mysql_real_escape_string($_POST['username']);
-$password = mysql_real_escape_string($_POST['password']);
-    
+$validate = true;
+if(empty($_POST['username'])){
+$validate = false;
+$usernameinvalidErr = 'Please Enter Username';
+$usernameErr = 'error';
+}
+else{
+$username = mysqli_real_escape_string($connect,$_POST['username']);
+}
+if(empty($_POST['password'])){
+$validate = false;
+$passwordinvalidErr = 'Please Enter Username';
+$passwordErr = 'error';
+}
+else{
+$password = mysqli_real_escape_string($connect,$_POST['password']);
+}
 $sql = "SELECT * FROM user WHERE username = '$username' and password = '$password'";
 $result = $connect->query($sql);
 $count = $result->num_rows;
@@ -24,7 +38,7 @@ if($count > 0){
     $_SESSION['contact'] = $res['contact'];
     $_SESSION['username'] = $res['username'];
     $_SESSION['name'] = $res['name'];
-    header("Location:../user/index.php");
+    header("Location:user/pos.php");
     break;
     
         case "admin";
@@ -40,12 +54,12 @@ if($count > 0){
     $_SESSION['contact'] = $res['contact'];
     $_SESSION['username'] = $res['username'];
     $_SESSION['name'] = $res['name'];
-     header("Location:../admin/admin_index.php");
+     header("Location:admin/admin_index.php");
 
     }
 }
 else {
-    echo"<script>alert('Error Username or Password!');window.location.href=('../index.php');</script>";
+     $invalidErr = 'Email or Password is incorrect.';
 }
 }
 ?>

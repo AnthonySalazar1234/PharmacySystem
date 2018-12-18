@@ -1,10 +1,10 @@
-<?php $title="DASHBOARD"; include"side_nav.php";?>
+<?php $title="SUPPLIERS"; include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php");?>
 <div class="admin_header">
-<button type="submit" id="myBtn">Add Supplier +</button>
+<button type="submit" id="myBtn">Add Supplier <span class='fa fa-plus-circle' aria-hidden='true'></span></button>
  <div class="search">
-    <form method="POST">
+    <form method="POST" autocomplete="off">
       <input type="text" placeholder="Search Supplier..." name="supplier_name">
-      <button type="submit" name="search">Search</button>
+      <button type="submit" name="search"><span class='fa fa-search' aria-hidden='true'></span></button>
     </form>
 </div>
 </div>
@@ -16,12 +16,10 @@
     <th>Contact Person</th>
     <th>Address</th>
     <th>Contact #</th>
-    <th>Email</th>
-    <th>Note</th>
     <th>Date</th>
     <th>Action</th>
   </tr>
-  <?php require'../php/connect.php';
+  <?php include($_SERVER['DOCUMENT_ROOT'].'/php/connect.php');
    if(isset($_POST['search'])){
   $supplier_name = $_POST['supplier_name'];
   $message="";
@@ -41,14 +39,12 @@
     <td><?php echo $row['contact_person'] ?></td>
     <td><?php echo $row['address'] ?></td>
     <td><?php echo $row['contact'] ?></td>
-    <td><?php echo $row['email'] ?></td>
-    <td><?php echo $row['note'] ?></td>
     <td><?php echo $row['date'] ?></td>
-     <td><a href="admin_edit_supplier.php?id=<?php echo $row['id'];?>"><img src="../image/edit.png" title="Edit Info"></a><a href="../php/delete_supplier.php?id=<?php echo $row['id'] ?>" onclick="return confirm('Are you sure you want to delete this admin')"><img src="../image/delete1.png" title="Delete Info"></td></a>
+     <td><a href="admin_edit_supplier.php?id=<?php echo $row['id'];?>"><img src="/image/edit.png" title="Edit Info"></a><a href="php/delete_supplier.php?id=<?php echo $row['id'] ?>" onclick="return confirm('Are you sure you want to delete this supplier')"><img src="/image/delete1.png" title="Delete Info"></td></a>
   </tr>
     <?php }}
     else if(!empty($_POST['supplier_name'])){
-      echo"<script>alert('No Results Found');window.location.href=('supplier.php');</script>";
+      echo"<script>alert('No Results Found');window.location.href=('admin_supplier.php');</script>";
     }
   else{
     $message = "<div class='message'>No Admin Created</div>";
@@ -60,12 +56,13 @@
 </div>
 
 <!---Modal reg-->
-<form method="POST"  action="php/add_supplier.php">
+<?php require($_SERVER['DOCUMENT_ROOT'].'/admin/php/add_supplier.php'); ?>
+<form method="POST"  action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
       <div id="myModal" class="modal">
   <div class="modal-content2">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Add Supplier</h2>
+      <h2><span class='fa fa-ambulance' aria-hidden='true'></span>  Add Supplier</h2>
     </div>
     <div class="modal-body">
        <div class="supplier_input">
@@ -82,13 +79,10 @@
           <input type="number" name="contact" placeholder="Enter Contact #" required="">
         </div>
          <div>
-          <input type="text" name="email" placeholder="Enter Email" required="">
-        </div>
-         <div>
           <textarea name="note" required="" placeholder="Enter Note"></textarea>
         </div>
         <div>
-          <button type="submit" name="add">Save</button>
+          <button type="submit" name="add"><span class='fa fa-save' aria-hidden='true'></span> Save</button>
         </div>
         </div>
       </div>
@@ -96,5 +90,6 @@
 </div>
  </div>
 </form>
-<script src="../js/modal_form.js"></script>
-<script src="../js/prev_pic.js"></script>
+<script src="/js/modal_form.js"></script>
+<script src="/js/prev_pic.js"></script>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>

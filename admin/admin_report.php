@@ -1,8 +1,8 @@
-<?php $title="SALES REPORTS"; include"side_nav.php";
+<?php $title="SALES REPORTS"; include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php"); 
 echo"
 <div id='reportbox'>
 <div class='reportheader'>
-<label>Reports</label>
+<label><span class='fa fa-gear'></span> Reports</label>
 </div>
 <div class='report1'>
 <form method='POST' action='admin_report_result.php'>
@@ -23,13 +23,13 @@ echo"
 	<label>Start Date:</label>
 </div>
 <div>
-	<input type='date' name='start_date' value=".date('Y-m-d')." required=''>
+	<input type='date' name='start_date' class='fa fa-calendar' aria-hidden='true' required=''>
 </div>
 <div>
 	<label>End Date:</label>
 </div>
 <div>
-	<input type='date' name='end_date'  required=''>
+	<input type='date' name='end_date' class='fa fa-calendar' aria-hidden='true' required=''>
 </div>
 <div>
 	<button type='submit' name='reports'>Search</button>
@@ -38,3 +38,4 @@ echo"
 </div>
 </div>
 ";?>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>

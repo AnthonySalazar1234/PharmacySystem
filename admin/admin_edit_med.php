@@ -1,5 +1,5 @@
-<?php $title="ADMIN"; include"side_nav.php"; 
-require"../php/connect.php";
+<?php $title="ADMIN"; include($_SERVER['DOCUMENT_ROOT']."/required/side_nav.php"); 
+require($_SERVER['DOCUMENT_ROOT'].'/php/connect.php');
 if(isset($_POST['edit'])){
 
 	$brand_name = $_POST['brand_name'];
@@ -16,7 +16,7 @@ if(isset($_POST['edit'])){
 	$date1 = time();
 	$date2 = date('Y-m-d',$date1);
 	if($expiration<=$date2){
-		echo"<script>alert('Unable to Update Expired Medicine');window.location.href=('admin_products.php');</script>";
+		echo"<script>alert('Unable to Update Expired Medicine');window.location.href=('admin_edit_med.php?product_id=$product_id');</script>";
 	}
 	else{
 	$update = "UPDATE inventory SET brand_name = '$brand_name',generic_name = '$generic_name',category='$category',type='$type',dosage='$dosage',manufactured='$manufactured',expiration='$expiration',quantity='$quantity',price='$price' WHERE product_id ='$product_id'";
@@ -36,7 +36,7 @@ echo"
 <form method='POST'>
 <div id='edit_med'>
 <div class='edit_header'>
-<label>Edit Information</label>
+<label><span class='fa fa-edit' aria-hidden='true'></span> Edit Information</label>
 </div>
 <div class='edit_info'>
 <div>
@@ -55,15 +55,19 @@ echo"
 <label>Category:</label>
 </div>
 <div>
-<select required='' name='category'>
-	<option style='background-color: skyblue;' selected='selected'>$row[category]</option>
-	<option value='Liquid'>Liquid</option>
-	<option value='Tablet'>Tablet</option>
-</select>
+	<select required name='category'>
+           <option selected='selected'>$row[category]</option>
+            <option>-----------------------</option>
+            <option value='Tablet'>Tablet</option>
+            <option value='Capsule'>Capsule</option>
+            <option value='Syrup'>Syrup<'option>
+            <option value='Softgel Capsule'>Softgel Capsule</option>
+            <option value='Caplet'>Caplet</option>
+            <option>-----------------------</option>
+          </select>
 </div>
-<br>
 <div>
-	<button type='submit' name='edit'>Save</button>
+	<button type='submit' name='edit'><span class='fa fa-save' aria-hidden='true'></span> Save</button>
 </div>
 </div>
 <div class='edit_info'>
@@ -71,7 +75,17 @@ echo"
 <label>Type:</label>
 </div>
 <div>
-<input type='text' name='type' value='$row[type]' required=''>
+ <select required name='type'>
+            <option selected='selected'>$row[type]</option>
+            <option>---------------------</option>
+            <option value='Cough & Colds'>Cough & Colds</option>
+            <option value='Body & Muscle Pain'>Body & Muscle Pain</option>
+            <option value='Headache,Fever & Flu'>Headache,Fever & Flu</option>
+            <option value='Allergy'>Allergy</option>
+            <option value='Vitamins'>Vitamins</option>
+            <option value='Healthy Aging Seniors'>Healthy Aging Seniors</option>
+             <option>--------------------</option>
+          </select>
 </div>
 <div>
 <label>Dosage</label>
@@ -111,6 +125,7 @@ echo"
 ";
 }}
 else if(empty($product_id)){
+	header("refresh:1 admin_products.php");
 	echo"<div class='message'>
 		<label>Error to Edit Data</label>
 	</div>";
@@ -119,3 +134,4 @@ else{
 	echo"Error";
 }
 ?>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/required/footer.php'); ?>
